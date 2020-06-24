@@ -7,6 +7,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import views
 
+from guoya_api.common.automation_case import run_api
 from . import serializers
 from . import models
 from rest_framework import mixins
@@ -115,6 +116,25 @@ class TestCases(views.APIView):
                 serializer.save(automationCaseApi=test_case)
 
         return Response("ok")
+
+
+class ExcuteCase(views.APIView):
+
+    def post(self,request):
+        # 获取请求数据
+        data = request.data
+        # 获取要执行的接口id
+        api_id = data["api_id"]
+        # 获取使用主机id
+        host_id = data["host_id"]
+        # 校验 接口数据是否存在，是否有缺失
+        run_api(host_id=host_id,api_id=api_id)
+        case_api = models.AutomationCaseApi.objects.filter(id = api_id).first()
+        res = case_api.test_result.all().last()
+        serializer = serializers.AutomationTestResultSerializer(instance=res)
+        return Response(serializer.data)
+
+
 
 
 

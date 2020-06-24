@@ -628,3 +628,4 @@ class TestSerializer(serializers.ModelSerializer):
                 "read_only": True
             }
         }
+

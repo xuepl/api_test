@@ -489,7 +489,7 @@ class AutomationTestResult(models.Model):
     手动执行结果
     """
     id = models.AutoField(primary_key=True)
-    automationCaseApi = models.OneToOneField(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口'
+    automationCaseApi = models.ForeignKey(AutomationCaseApi, on_delete=models.CASCADE, verbose_name='接口'
                                              , related_name="test_result")
     url = models.CharField(max_length=1024, verbose_name='请求地址')
     requestType = models.CharField(max_length=1024, verbose_name='请求方式', choices=REQUEST_TYPE_CHOICE)
